@@ -16,6 +16,8 @@ using Microsoft.Owin.Security.OAuth;
 using Blog.Models;
 using Blog.Providers;
 using Blog.Results;
+using System.Web.Http.Description;
+using AutoMapper;
 
 namespace Blog.Controllers
 {
@@ -319,6 +321,7 @@ namespace Blog.Controllers
         }
 
         // POST api/Account/Register
+        [ResponseType(typeof(UserDetailViewModel))]
         [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
@@ -328,8 +331,8 @@ namespace Blog.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
+            var user = new ApplicationUser() { UserName = model.UserName, PhoneNumber = model.PhoneNumber, Email = model.Email, EmailConfirmed = true };
+            var userViewModel = Mapper.Map<UserDetailViewModel>(user);
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
@@ -337,7 +340,7 @@ namespace Blog.Controllers
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            return Ok(userViewModel);
         }
 
         // POST api/Account/RegisterExternal

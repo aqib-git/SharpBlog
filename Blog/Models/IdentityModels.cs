@@ -21,10 +21,18 @@ namespace Blog.Models
         }
     }
 
+    public class UserDto
+    {
+        public string Id { get; set; }
+        public string Email { get; set; }
+        public string UserName { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("SQLServerConnection", throwIfV1Schema: false)
         {
             this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = false;
@@ -36,5 +44,6 @@ namespace Blog.Models
         }
 
         public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<Media> Media { get; set; }
     }
 }

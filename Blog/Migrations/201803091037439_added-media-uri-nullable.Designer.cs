@@ -7,13 +7,13 @@ namespace Blog.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class showposts : IMigrationMetadata
+    public sealed partial class addedmediaurinullable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(showposts));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addedmediaurinullable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201802091049045_show-posts"; }
+            get { return "201803091037439_added-media-uri-nullable"; }
         }
         
         string IMigrationMetadata.Source

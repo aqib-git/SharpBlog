@@ -18,6 +18,9 @@ namespace Blog
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // custom Config
+            AutoMapperConfig.configure();
         }
     }
 }
