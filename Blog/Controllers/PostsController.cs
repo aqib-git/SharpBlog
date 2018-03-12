@@ -15,6 +15,8 @@ using AutoMapper;
 
 namespace Blog.Controllers
 {
+    [Authorize]
+    [RoutePrefix("api/Posts")]
     public class PostsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -90,7 +92,8 @@ namespace Blog.Controllers
 
         // POST: api/Posts
         [ResponseType(typeof(PostDto))]
-        public async Task<IHttpActionResult> PostPost(PostDto postDto)
+        [HttpPost]
+        public async Task<IHttpActionResult> CreatePost(PostDto postDto)
         {
             
             postDto.UserId = User.Identity.GetUserId();
@@ -109,9 +112,9 @@ namespace Blog.Controllers
             return Ok(postDto);
         }
 
-        [Route("api/Posts/all")]
+        [Route("bulk")]
         // Posts: api/posts/all
-        public async Task<IHttpActionResult> PostAll(IEnumerable<PostDto> postDtos)
+        public async Task<IHttpActionResult> CreatePostInBulk(IEnumerable<PostDto> postDtos)
         {
             foreach (var postDto in postDtos)
             {
