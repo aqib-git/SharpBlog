@@ -19,7 +19,7 @@ namespace Blog.Controllers
     [RoutePrefix("api/Media")]
     public class MediaController : ApiController
     {
-        String[] mediaExtensions = new String[]{ "image/x-png", "image/gif", "image/jpeg", "video/mp4", "video/ogg", "video/webm" };
+        String[] mediaExtensions = new String[]{ "image/png", "image/x-png", "image/gif", "image/jpeg", "video/mp4", "video/ogg", "video/webm" };
 
         decimal mediaSize = 5;
 

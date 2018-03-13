@@ -20,7 +20,7 @@ namespace Blog.Controllers
     public class PostsController : ApiBaseController
     {
         // GET: api/Posts
-        [ResponseType(typeof(ApiResponse<PostViewModel>))]
+        [ResponseType(typeof(ApiResponseList<PostViewModel>))]
         [AllowAnonymous]
         public IHttpActionResult GetPosts()
         {
@@ -50,19 +50,26 @@ namespace Blog.Controllers
         }
 
         // GET: api/Posts/5
-        [ResponseType(typeof(PostDto))]
-        public async Task<IHttpActionResult> GetPost(Guid id)
+        [ResponseType(typeof(ApiResponse<PostViewModel>))]
+        [AllowAnonymous]
+        public IHttpActionResult GetPost(Guid id)
         {
-            Post post = await db.Posts.FindAsync(id);
+            var post = db.Posts
+                .Include(m => m.Media)
+                .Include(p => p.User)
+                .Where(u => u.Id == id)
+                .FirstOrDefault();
 
             if (post == null)
             {
                 return NotFound();
             }
 
-            var postDto = Mapper.Map<PostDto>(post);
+            var postVM = Mapper.Map<PostViewModel>(post);
+            postVM.Media = Mapper.Map<MediaViewModel>(post.Media);
+            postVM.User = Mapper.Map<UserDetailViewModel>(post.User);
 
-            return Ok(postDto);
+            return Ok(new ApiResponse<PostViewModel> { Data = postVM });
         }
 
         // PUT: api/Posts/5
