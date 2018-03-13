@@ -45,5 +45,5 @@ namespace Blog.Models
 
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Media> Media { get; set; }
-    }
+   }
 }

@@ -11,6 +11,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Blog.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Blog.Providers
 {
@@ -89,9 +90,15 @@ namespace Blog.Providers
 
         public static AuthenticationProperties CreateProperties(ApplicationUser user)
         {
+            var serializeSetting = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            var serializedUser = JsonConvert.SerializeObject(AutoMapper.Mapper.Map<UserDto>(user), serializeSetting);
+
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "user", JsonConvert.SerializeObject(AutoMapper.Mapper.Map<UserDto>(user))}
+                { "user", serializedUser}
             };
             return new AuthenticationProperties(data);
         }

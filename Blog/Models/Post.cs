@@ -33,7 +33,7 @@ namespace Blog.Models
 
     public class PostDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
@@ -41,5 +41,19 @@ namespace Blog.Models
         [Required]
         public bool Show { get; set; }
         public string UserId { get; set; }
+        public string MediaId { get; set; }
+    }
+
+    public class PostViewModel
+    {
+        public Guid Id { get; set; }
+        [Required]
+        public string Title { get; set; }
+        [Required]
+        public string Description { get; set; }
+        [Required]
+        public bool Show { get; set; }
+        public UserDetailViewModel User { get; set; }
+        public MediaViewModel Media { get; set; }
     }
 }

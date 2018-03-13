@@ -43,4 +43,16 @@ namespace Blog.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
+
+    public class MediaViewModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public MediaTypesEnum Type { get; set; }
+        public string Mime { get; set; }
+        public UserDetailViewModel User { get; set; }
+        public string Uri { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+    }
 }

@@ -17,26 +17,36 @@ namespace Blog.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Posts")]
-    public class PostsController : ApiController
+    public class PostsController : ApiBaseController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: api/Posts
-        [ResponseType(typeof(List<PostDto>))]
+        [ResponseType(typeof(ApiResponse<PostViewModel>))]
+        [AllowAnonymous]
         public IHttpActionResult GetPosts()
         {
-            var userId = User.Identity.GetUserId();
+            var apiPagination = ApiPaginate(db.Posts.Count());
 
-            var posts = db.Posts.Where(p => p.User.Id == userId);
+            var posts = db.Posts
+                .Include(m => m.Media)
+                .Include(u => u.User)
+                .OrderByDescending(o => o.CreatedAt)
+                .Skip((apiPagination.CurrentPage-1) * apiPagination.PageSize)
+                .Take(apiPagination.PageSize);
 
-            var postDtos = new List<PostDto>();
-
+            var postViewModels = new List<PostViewModel>();
             foreach (var post in posts)
             {
-                postDtos.Add(Mapper.Map<PostDto>(post));
+                var postViewModel = Mapper.Map<PostViewModel>(post);
+                postViewModel.Media = Mapper.Map<MediaViewModel>(post.Media);
+                postViewModel.User = Mapper.Map<UserDetailViewModel>(post.User);
+                postViewModels.Add(postViewModel);
             }
-
-            return Ok(postDtos);
+            var apiResponse = new ApiResponseList<PostViewModel>
+            {
+                Data = postViewModels,
+                Pagination = apiPagination
+            };
+            return Ok(apiResponse);
         }
 
         // GET: api/Posts/5

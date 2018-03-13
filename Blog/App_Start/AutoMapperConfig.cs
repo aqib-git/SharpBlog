@@ -13,9 +13,13 @@ namespace Blog
         {
             Mapper.Initialize(m => {
                 m.CreateMap<PostDto, Post>();
+
                 m.CreateMap<UserDto, ApplicationUser>();
                 m.CreateMap<ApplicationUser, UserDetailViewModel>();
+                m.CreateMap<UserDetailViewModel, ApplicationUser>();
+
                 m.CreateMap<MediaDto, Media>();
+                m.CreateMap<MediaViewModel, Media>();
             });
         }
     }
